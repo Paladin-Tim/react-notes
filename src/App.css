@@ -1,0 +1,98 @@
+#root {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 2rem;
+  text-align: center;
+  width: 40%;
+}
+
+.card {
+  background-color: #fff;
+  border-radius: 15px;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.todoList {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  text-align: left;
+  gap: 1.3rem;
+  padding-left: 0.8rem;
+}
+
+.todoItemWrapper {
+  padding-left: 1rem;
+}
+
+.todoItem {
+  border: solid 1px #9f9c9c;
+  border-radius: 8px;
+  padding: 0.5rem;
+  display: flex;
+  gap: 0.5rem;
+}
+
+.todoItemWrapper::marker {
+  line-height: 1;
+}
+
+.todoItem:hover {
+  border-color: #7b45b7;
+}
+
+.formTitle {
+  color: #000;
+  margin: 0;
+  text-align: left;
+  padding-bottom: 1.5rem;
+  letter-spacing: 1px;
+}
+
+.inputWrapper {
+  display: flex;
+  flex-direction: column;
+}
+
+.formInput {
+  border: solid 1px #9f9c9c;
+  border-radius: 5px;
+  padding: 0.7rem;
+}
+
+.formInput::placeholder {
+  opacity: 0.5;
+}
+
+.formInput.hasError {
+  border: solid 1px red;
+}
+
+.submitBtn {
+  background: linear-gradient(90deg, #7b45b7, #37b6d9);
+  color: #fff;
+  border: none;
+  padding: 0.7rem 2rem;
+  border-radius: 5px;
+  align-self: flex-start;
+  font-weight: 600;
+  letter-spacing: 0.7px;
+  cursor: pointer;
+  margin-top: 0.7rem;
+}
+
+.submitBtn:disabled {
+  background: #9f9c9c;
+}
+
+.errorText {
+  color: red;
+  font-size: 12px;
+  font-weight: 400;
+  text-align: left;
+  height: 1rem;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+}

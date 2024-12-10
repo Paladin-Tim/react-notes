@@ -3,96 +3,163 @@
   margin: 0 auto;
   padding: 2rem;
   text-align: center;
-  width: 40%;
+  width: 60%;
+}
+.navMenu {
+  display: flex;
+  justify-content: space-evenly;
+  gap: 4rem;
+}
+
+.navMenu input {
+  border-color: #6c63ff;
+}
+
+.navMenu button {
+  background: #6c63ff;
+}
+
+.navMenu button:hover {
+  background: #534cc2 !important;
 }
 
 .card {
   background-color: #fff;
   border-radius: 15px;
-  padding: 2rem;
+  padding: 2rem 4rem;
   display: flex;
   flex-direction: column;
+  align-items: stretch;
+  gap: 1.8rem;
+}
+
+.emptyWrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  align-self: center;
+}
+
+.emptyImg {
+  background-image: url(./assets/empty.svg);
+  background-repeat: no-repeat;
+  background-size: contain;
+  aspect-ratio: 221 / 174;
 }
 
 .todoList {
   display: flex;
   flex-direction: column;
   align-items: stretch;
+  align-self: center;
   text-align: left;
   gap: 1.3rem;
   padding-left: 0.8rem;
+  max-width: 80%;
+  width: 80%;
 }
 
 .todoItemWrapper {
   padding-left: 1rem;
 }
 
+.todoItem .ant-checkbox-inner {
+  background-color: transparent;
+  border-color: #6c63ff;
+  width: 1.5rem;
+  height: 1.5rem;
+}
+
+.todoItem.completed input {
+  background-color: #6c63ff !important;
+}
+
+.todoItem.completed input:hover {
+  background-color: #534cc2 !important;
+}
+
+.todoItem.completed .ant-checkbox-inner {
+  background-color: #6c63ff !important;
+}
+
+.todoItem.completed .ant-checkbox-inner:hover {
+  background-color: #534cc2 !important;
+}
+
 .todoItem {
-  border: solid 1px #9f9c9c;
-  border-radius: 8px;
-  padding: 0.5rem;
+  border-bottom: solid 1px #7b45b7;
+  padding: 0.5rem 0.5rem 1rem;
   display: flex;
-  gap: 0.5rem;
+  gap: 1.5rem;
+  justify-content: space-between;
+  align-items: flex-end;
+}
+
+.todoItem.completed {
+  text-decoration: line-through;
+  color: grey;
 }
 
 .todoItemWrapper::marker {
   line-height: 1;
 }
 
-.todoItem:hover {
-  border-color: #7b45b7;
+.todoText {
+  flex-grow: 1;
+  font-size: 1rem;
+  padding: 4px 11px;
+  border: solid 1px transparent;
 }
 
-.formTitle {
-  color: #000;
-  margin: 0;
-  text-align: left;
-  padding-bottom: 1.5rem;
-  letter-spacing: 1px;
+.editInput {
+  font-size: 1rem;
+}
+
+.todoButtons {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.btnEdit:hover {
+  color: #6c63ff !important;
+}
+
+.btnDelete:hover {
+  color: #e50000 !important;
+}
+
+.btnAdd {
+  align-self: end;
+  background: #6c63ff !important;
+  border-color: #6c63ff !important;
+  color: #fff !important;
+}
+
+.btnAdd:hover {
+  background: #534cc2 !important;
+}
+
+.btnAdd.ant-popover-open {
+  background: #fff !important;
+  border-color: #6c63ff !important;
+  color: #6c63ff !important;
+}
+
+.btnSort,
+.btnAppend {
+  background: #6c63ff;
+  border-color: #6c63ff;
+  color: #fff;
+}
+
+.btnSort:hover,
+.btnAppend:hover {
+  background: #534cc2 !important;
+  border-color: #6c63ff !important;
+  color: #fff !important;
 }
 
 .inputWrapper {
   display: flex;
-  flex-direction: column;
-}
-
-.formInput {
-  border: solid 1px #9f9c9c;
-  border-radius: 5px;
-  padding: 0.7rem;
-}
-
-.formInput::placeholder {
-  opacity: 0.5;
-}
-
-.formInput.hasError {
-  border: solid 1px red;
-}
-
-.submitBtn {
-  background: linear-gradient(90deg, #7b45b7, #37b6d9);
-  color: #fff;
-  border: none;
-  padding: 0.7rem 2rem;
-  border-radius: 5px;
-  align-self: flex-start;
-  font-weight: 600;
-  letter-spacing: 0.7px;
-  cursor: pointer;
-  margin-top: 0.7rem;
-}
-
-.submitBtn:disabled {
-  background: #9f9c9c;
-}
-
-.errorText {
-  color: red;
-  font-size: 12px;
-  font-weight: 400;
-  text-align: left;
-  height: 1rem;
-  padding-top: 0.5rem;
-  padding-bottom: 0.5rem;
+  gap: 1rem;
 }

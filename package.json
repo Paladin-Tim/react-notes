@@ -11,6 +11,8 @@
     "format": "prettier --whrite ./src"
   },
   "dependencies": {
+    "@ant-design/icons": "^5.5.2",
+    "antd": "^5.22.3",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-prettier": "^5.2.1",
     "react": "^18.3.1",

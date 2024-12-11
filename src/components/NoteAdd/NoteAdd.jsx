@@ -2,28 +2,27 @@ import { useState } from "react";
 import { Input, Popover, Button } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 import { useInput } from "../../hooks/useInput";
+import { ref, push } from "firebase/database";
+import { db } from "../../firebase";
 
-export const NoteAdd = ({ setIsLoading, refreshNotes }) => {
+export const NoteAdd = ({ setIsLoading }) => {
   const [isPopoverOpen, setIsPopoverOpen] = useState(false);
   const handleOpenChange = (newOpen) => {
     setIsPopoverOpen(newOpen);
   };
+
+  const todosDBRef = ref(db, "todos");
 
   const addInput = useInput();
 
   const addNote = () => {
     setIsLoading(true);
 
-    fetch("http://localhost:3002/todos", {
-      method: "POST",
-      headers: { "Content-Type": "application/json;charset=utf-8" },
-      body: JSON.stringify({
-        todo: addInput.value,
-        completed: false,
-      }),
+    push(todosDBRef, {
+      todo: addInput.value,
+      completed: false,
     })
       .then(() => {
-        refreshNotes();
         addInput.clear("");
         isPopoverOpen(false);
       })

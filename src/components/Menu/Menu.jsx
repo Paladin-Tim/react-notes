@@ -3,7 +3,7 @@ import { SortAscendingOutlined, OrderedListOutlined } from "@ant-design/icons";
 import { useInput } from "../../hooks/useInput";
 const { Search } = Input;
 
-export const Menu = ({ isSorted, setIsSorted, refreshNotes, onSearch }) => {
+export const Menu = ({ isSorted, setIsSorted, onSearch }) => {
   const searchInput = useInput();
 
   const searchNotes = () => {
@@ -26,7 +26,6 @@ export const Menu = ({ isSorted, setIsSorted, refreshNotes, onSearch }) => {
           size="large"
           className="btnSort"
           onClick={() => {
-            refreshNotes();
             setIsSorted(true);
           }}
         />
@@ -37,7 +36,6 @@ export const Menu = ({ isSorted, setIsSorted, refreshNotes, onSearch }) => {
           size="large"
           className="btnSort"
           onClick={() => {
-            refreshNotes();
             setIsSorted(false);
           }}
         />

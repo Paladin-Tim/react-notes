@@ -1,4 +1,6 @@
 import { useEffect, useState } from "react";
+import { ref, onValue, get, update, remove } from "firebase/database";
+import { db } from "./firebase.js";
 import "./App.css";
 import Loader from "./components/Loader/Loader.jsx";
 import { Note } from "./components/Note/Note.jsx";
@@ -6,76 +8,63 @@ import { Menu } from "./components/Menu/Menu.jsx";
 import { NoteAdd } from "./components/NoteAdd/NoteAdd.jsx";
 
 export const App = () => {
-  const [todos, setTodos] = useState([]);
+  const [todos, setTodos] = useState({});
   const [isLoading, setIsLoading] = useState(false);
-  const [refreshNotesFlag, setRefreshNotesFlag] = useState(false);
   const [isSorted, setIsSorted] = useState(false);
   const [searchPhrase, setSearchPhrase] = useState("");
 
-  const refreshNotes = () => {
-    setRefreshNotesFlag(!refreshNotesFlag);
-  };
+  const todosDBRef = ref(db, "todos");
 
   useEffect(() => {
     setIsLoading(true);
 
-    fetch("http://localhost:3002/todos")
-      .then((loadedData) => loadedData.json())
-      .then((loadedTodos) => {
-        setTodos(loadedTodos);
-      })
-      .finally(() => setIsLoading(false));
-  }, [refreshNotesFlag]);
+    return onValue(todosDBRef, (snapshot) => {
+      const loadedNotes = snapshot.val() || {};
+      setTodos(loadedNotes);
+      setIsLoading(false);
+    });
+  }, []);
 
   useEffect(() => {
     if (searchPhrase === "") {
-      refreshNotes();
+      get(todosDBRef).then((snapshot) => {
+        setTodos(snapshot.val());
+      });
     } else {
-      fetch("http://localhost:3002/todos")
-        .then((loadedData) => loadedData.json())
-        .then((loadedTodos) => {
-          let searchResult = loadedTodos.filter((todo) =>
-            todo.todo.includes(searchPhrase, 0),
-          );
-          setTodos(searchResult);
-        });
+      let searchResult = Object.values(todos).filter((todo) =>
+        todo.todo.includes(searchPhrase, 0),
+      );
+      setTodos(searchResult);
     }
   }, [searchPhrase]);
 
-  const completNote = (id, isCompleted, index) => {
-    fetch(`http://localhost:3002/todos/${id}`, {
-      method: "PATCH",
-      headers: { "Content-Type": "application/json;charset=utf-8" },
-      body: JSON.stringify({
-        completed: !isCompleted,
-      }),
+  const completNote = (id, isCompleted) => {
+    const noteRef = ref(db, `todos/${id}`);
+
+    update(noteRef, {
+      completed: !isCompleted,
     }).then(() => {
-      let newTodos = [...todos];
-      newTodos[index].completed = !isCompleted;
+      let newTodos = { ...todos };
+      newTodos.id.completed = !isCompleted;
       setTodos(newTodos);
     });
   };
 
-  const editNote = (id, index, newValue) => {
-    fetch(`http://localhost:3002/todos/${id}`, {
-      method: "PATCH",
-      headers: { "Content-Type": "application/json;charset=utf-8" },
-      body: JSON.stringify({
-        todo: newValue,
-      }),
+  const editNote = (id, newValue) => {
+    const noteRef = ref(db, `todos/${id}`);
+
+    update(noteRef, {
+      todo: newValue,
     }).then(() => {
-      let newTodos = [...todos];
-      newTodos[index].todo = newValue;
+      let newTodos = { ...todos };
+      newTodos.id.todo = newValue;
       setTodos(newTodos);
     });
   };
 
   const removeNote = (id) => {
-    fetch(`http://localhost:3002/todos/${id}`, {
-      method: "DELETE",
-    }).then(() => {
-      refreshNotes();
-    });
+    const noteRef = ref(db, `todos/${id}`);
+    remove(noteRef);
   };
 
   return (
@@ -85,7 +74,6 @@ export const App = () => {
         <Menu
           isSorted={isSorted}
           setIsSorted={setIsSorted}
-          refreshNotes={refreshNotes}
           onSearch={setSearchPhrase}
         />
         {isLoading ? (
@@ -98,13 +86,13 @@ export const App = () => {
         ) : (
           <ol className="todoList">
             {isSorted
-              ? todos
+              ? Object.entries(todos)
                   .sort((a, b) => {
-                    let textA = a.todo.toUpperCase();
-                    let textB = b.todo.toUpperCase();
+                    let textA = a[1].todo.toUpperCase();
+                    let textB = b[1].todo.toUpperCase();
                     return textA.localeCompare(textB);
                   })
-                  .map(({ id, todo, completed }, index) => (
+                  .map(([id, { todo, completed }], index) => (
                     <Note
                       key={id}
                       id={id}
@@ -116,21 +104,23 @@ export const App = () => {
                       removeNote={removeNote}
                     />
                   ))
-              : todos.map(({ id, todo, completed }, index) => (
-                  <Note
-                    key={id}
-                    id={id}
-                    todo={todo}
-                    completed={completed}
-                    index={index}
-                    completNote={completNote}
-                    editNote={editNote}
-                    removeNote={removeNote}
-                  />
-                ))}
+              : Object.entries(todos).map(
+                  ([id, { todo, completed }], index) => (
+                    <Note
+                      key={id}
+                      id={id}
+                      todo={todo}
+                      completed={completed}
+                      index={index}
+                      completNote={completNote}
+                      editNote={editNote}
+                      removeNote={removeNote}
+                    />
+                  ),
+                )}
           </ol>
         )}
-        <NoteAdd setIsLoading={setIsLoading} refreshNotes={refreshNotes} />
+        <NoteAdd setIsLoading={setIsLoading} />
       </article>
     </>
   );
